@@ -2,39 +2,24 @@ name: Build Geode Mod
 
 on:
   push:
-    branches:
-      - main
-      - master
   pull_request:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
+  validate:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Show Files
-        run: dir
-        shell: cmd
+      - name: Check mod.json
+        run: test -f mod.json
 
-      - name: Verify Project Files
-        shell: bash
-        run: |
-          test -f mod.json
-          test -f CMakeLists.txt
-          test -f src/main.cpp
+      - name: Check CMakeLists.txt
+        run: test -f CMakeLists.txt
 
-      - name: Upload Source
-        uses: actions/upload-artifact@v4
-        with:
-          name: source-files
-          path: .            echo "CMakeLists.txt missing"
-            exit 1
-          fi
-
+      - name: Check main.cpp
+        run: test -f src/main.cpp
       - name: Verify source folder
         run: |
           if [ ! -d src ]; then
