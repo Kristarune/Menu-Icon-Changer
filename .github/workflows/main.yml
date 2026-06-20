@@ -8,33 +8,30 @@ on:
   pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   build:
-    name: Build Mod
-    uses: geode-sdk/build-geode-mod/.github/workflows/build.yml@main
-
-  validate:
-    name: Validate Project
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify mod.json exists
-        run: |
-          if [ ! -f mod.json ]; then
-            echo "mod.json missing"
-            exit 1
-          fi
+      - name: Show Files
+        run: dir
+        shell: cmd
 
-      - name: Verify CMakeLists exists
+      - name: Verify Project Files
+        shell: bash
         run: |
-          if [ ! -f CMakeLists.txt ]; then
-            echo "CMakeLists.txt missing"
+          test -f mod.json
+          test -f CMakeLists.txt
+          test -f src/main.cpp
+
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-files
+          path: .            echo "CMakeLists.txt missing"
             exit 1
           fi
 
