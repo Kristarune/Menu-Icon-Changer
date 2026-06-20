@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.21)
 
 project(MenuLogoChanger VERSION 1.0.0)
 
+add_subdirectory(${GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
+
 file(GLOB_RECURSE SOURCES
     src/*.cpp
 )
