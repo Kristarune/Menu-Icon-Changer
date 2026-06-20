@@ -1,0 +1,85 @@
+name: Build Geode Mod
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Mod
+    uses: geode-sdk/build-geode-mod/.github/workflows/build.yml@main
+
+  validate:
+    name: Validate Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify mod.json exists
+        run: |
+          if [ ! -f mod.json ]; then
+            echo "mod.json missing"
+            exit 1
+          fi
+
+      - name: Verify CMakeLists exists
+        run: |
+          if [ ! -f CMakeLists.txt ]; then
+            echo "CMakeLists.txt missing"
+            exit 1
+          fi
+
+      - name: Verify source folder
+        run: |
+          if [ ! -d src ]; then
+            echo "src folder missing"
+            exit 1
+          fi
+
+      - name: Verify main.cpp
+        run: |
+          if [ ! -f src/main.cpp ]; then
+            echo "main.cpp missing"
+            exit 1
+          fi
+
+      - name: Print project structure
+        run: |
+          find .
+
+      - name: Check mod ID
+        run: |
+          grep "\"id\"" mod.json || exit 1
+
+      - name: Check version
+        run: |
+          grep "\"version\"" mod.json || exit 1
+
+      - name: Check Geode dependency
+        run: |
+          grep "\"geode\"" mod.json || exit 1
+
+  release:
+    name: Release
+    needs:
+      - build
+      - validate
+
+    if: startsWith(github.ref, 'refs/tags/')
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
