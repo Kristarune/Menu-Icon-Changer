@@ -9,20 +9,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check mod.json
-        run: test -f mod.json
+      - name: Build the mod
+        id: build
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          target: Win64
 
-      - name: Check CMakeLists.txt
-        run: test -f CMakeLists.txt
-
-      - name: Check src/main.cpp
-        run: test -f src/main.cpp
-
-      - name: Show tree
-        run: find .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Geode Mod
+          path: ${{ steps.build.outputs.build-output }}
