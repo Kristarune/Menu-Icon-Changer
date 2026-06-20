@@ -2,6 +2,9 @@ name: Build Geode Mod
 
 on:
   push:
+    branches:
+      - main
+      - master
   pull_request:
   workflow_dispatch:
 
@@ -12,29 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check mod.json
-        run: test -f mod.json
-
-      - name: Check CMakeLists.txt
-        run: test -f CMakeLists.txt
-
-      - name: Check main.cpp
-        run: test -f src/main.cpp
-      - name: Verify source folder
+      - name: Check files
         run: |
-          if [ ! -d src ]; then
-            echo "src folder missing"
-            exit 1
-          fi
+          test -f mod.json
+          test -f CMakeLists.txt
+          test -f src/main.cpp
 
-      - name: Verify main.cpp
-        run: |
-          if [ ! -f src/main.cpp ]; then
-            echo "main.cpp missing"
-            exit 1
-          fi
-
-      - name: Print project structure
+      - name: Show tree
+        run: find .      - name: Print project structure
         run: |
           find .
 
