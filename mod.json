@@ -1,0 +1,8 @@
+{
+    "geode": "4.8.0",
+    "version": "1.0.0",
+    "id": "azur3.menu-logo-changer",
+    "name": "Menu Logo Changer",
+    "developer": "Kristarune",
+    "description": "Load a custom Geometry Dash menu logo from a PNG file."
+}
