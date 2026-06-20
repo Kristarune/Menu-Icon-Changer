@@ -1,4 +1,6 @@
-{
+{   
+    "gd": {
+    "win": "2.208"
     "geode": "4.8.0",
     "version": "1.0.0",
     "id": "azur3.menu-logo-changer",
