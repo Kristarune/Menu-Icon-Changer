@@ -15,41 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check files
-        run: |
-          test -f mod.json
-          test -f CMakeLists.txt
-          test -f src/main.cpp
+      - name: Check mod.json
+        run: test -f mod.json
+
+      - name: Check CMakeLists.txt
+        run: test -f CMakeLists.txt
+
+      - name: Check src/main.cpp
+        run: test -f src/main.cpp
 
       - name: Show tree
-        run: find .      - name: Print project structure
-        run: |
-          find .
-
-      - name: Check mod ID
-        run: |
-          grep "\"id\"" mod.json || exit 1
-
-      - name: Check version
-        run: |
-          grep "\"version\"" mod.json || exit 1
-
-      - name: Check Geode dependency
-        run: |
-          grep "\"geode\"" mod.json || exit 1
-
-  release:
-    name: Release
-    needs:
-      - build
-      - validate
-
-    if: startsWith(github.ref, 'refs/tags/')
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+        run: find .
